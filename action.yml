@@ -1,25 +1,48 @@
 name: 'Install pkl'
-description: 'Install pkl, the new Apple configuration-as-code language, on Linux'
+description: 'Install pkl, the new Apple code-as-configuration language, on macOS and Linux'
+inputs:
+  version:
+    description: 'The version of pkl to install'
+    required: false
+    default: '0.25.3'
 runs:
   using: "composite"
   steps:
-    - name: Install pkl on Ubuntu
-      if: runner.os == 'Linux' && runner.arch == 'X64'
+    - name: Check runner operating system
+      if: runner.os != 'macOS' && runner.os != 'Linux'
       shell: bash
       run: |
+        echo "::error::This action only supports macOS and Linux runners."
+        exit 1
+    - name: Install pkl
+      shell: bash
+      run: |
+        case ${{ runner.os }} in
+          Linux)
+            case ${{ runner.arch }} in
+              X64)
+                BINARY_NAME="pkl-linux-amd64"
+                ;;
+              ARM64)
+                BINARY_NAME="pkl-linux-aarch64"
+                ;;
+            esac
+            ;;
+          macOS)
+            case ${{ runner.arch }} in
+              X64)
+                BINARY_NAME="pkl-macos-amd64"
+                ;;
+              ARM64)
+                BINARY_NAME="pkl-macos-aarch64"
+                ;;
+            esac
+            ;;
+        esac
+
         mkdir -p ${{ github.action_path }}/bin
         echo "${{ github.action_path }}/bin" >> $GITHUB_PATH
         cd ${{ github.action_path }}/bin
-        curl -L -o pkl https://github.com/apple/pkl/releases/download/0.25.3/pkl-linux-amd64
-        chmod +x pkl
-        ./pkl --version
-    - name: Install pkl on Ubuntu (ARM64)
-      if: runner.os == 'Linux' && runner.arch == 'ARM64'
-      shell: bash
-      run: |
-        mkdir -p ${{ github.action_path }}/bin
-        echo "${{ github.action_path }}/bin" >> $GITHUB_PATH
-        cd ${{ github.action_path }}/bin
-        curl -L -o pkl https://github.com/apple/pkl/releases/download/0.25.3/pkl-linux-amd64
+        curl -L -o pkl https://github.com/apple/pkl/releases/download/${{ inputs.version }}/$BINARY_NAME
         chmod +x pkl
         ./pkl --version

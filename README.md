@@ -1,10 +1,10 @@
 # Install pkl GitHub Action
 
-This GitHub Action installs [pkl](https://github.com/apple/pkl), a new Apple configuration-as-code language, on Linux runners.
+This GitHub Action installs [pkl](https://github.com/apple/pkl), a new Apple configuration-as-code language, on Linux or Mac runners.
 
 ## Features
 
-- Installs pkl on Ubuntu (amd64 and aarch64)
+- Installs pkl on MacOS and Ubuntu
 - Easy to use in your GitHub Actions workflows
 - Needed if using pkl code generation in your workflow
 
@@ -14,7 +14,7 @@ To use this action in your workflow, add the following step:
 
 ```yaml
 steps:
-  - uses: deezapps-fam/install-pkl-action@v1
+  - uses: deezapps-fam/install-pkl@v1
 ```
 
 ## Example Workflow
@@ -29,7 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: deezapps-fam/install-pkl-action@v1
+      - uses: deezapps-fam/install-pkl@v1
       - name: Run pkl command
         run: | 
           pkl --version
@@ -38,6 +38,16 @@ jobs:
 ## Inputs
 
 This action does not require any inputs.
+However, the `version` to download can be optionally specified:
+
+```yaml
+steps:
+  - uses: deezapps-fam/install-pkl@v1
+    with:
+      version: '0.25.3'
+```
+
+The current default version is `0.25.3`.
 
 ## Outputs
 
