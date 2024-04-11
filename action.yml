@@ -5,6 +5,9 @@ inputs:
     description: 'The version of pkl to install'
     required: false
     default: '0.25.3'
+branding:
+  icon: 'package'
+  color: 'green'
 runs:
   using: "composite"
   steps:
