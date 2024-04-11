@@ -1,0 +1,21 @@
+name: 'Install pkl'
+description: 'Install pkl, the new Apple configuration-as-code language, on Linux'
+runs:
+  using: "composite"
+  steps:
+    - name: Install pkl on Ubuntu
+      if: runner.os == 'Linux' && runner.arch == 'X64'
+      shell: bash
+      run: |
+        curl -L -o pkl https://github.com/apple/pkl/releases/download/0.25.3/pkl-linux-amd64
+        chmod +x pkl
+        sudo mv pkl /usr/local/bin/
+        pkl --version
+    - name: Install pkl on Ubuntu (ARM64)
+      if: runner.os == 'Linux' && runner.arch == 'ARM64'
+      shell: bash
+      run: |
+        curl -L -o pkl https://github.com/apple/pkl/releases/download/0.25.3/pkl-linux-aarch64
+        chmod +x pkl
+        sudo mv pkl /usr/local/bin/
+        pkl --version
