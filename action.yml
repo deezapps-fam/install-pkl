@@ -7,15 +7,19 @@ runs:
       if: runner.os == 'Linux' && runner.arch == 'X64'
       shell: bash
       run: |
+        mkdir -p ${{ github.action_path }}/bin
+        echo "${{ github.action_path }}/bin" >> $GITHUB_PATH
+        cd ${{ github.action_path }}/bin
         curl -L -o pkl https://github.com/apple/pkl/releases/download/0.25.3/pkl-linux-amd64
         chmod +x pkl
-        sudo mv pkl /usr/local/bin/
-        pkl --version
+        ./pkl --version
     - name: Install pkl on Ubuntu (ARM64)
       if: runner.os == 'Linux' && runner.arch == 'ARM64'
       shell: bash
       run: |
-        curl -L -o pkl https://github.com/apple/pkl/releases/download/0.25.3/pkl-linux-aarch64
+        mkdir -p ${{ github.action_path }}/bin
+        echo "${{ github.action_path }}/bin" >> $GITHUB_PATH
+        cd ${{ github.action_path }}/bin
+        curl -L -o pkl https://github.com/apple/pkl/releases/download/0.25.3/pkl-linux-amd64
         chmod +x pkl
-        sudo mv pkl /usr/local/bin/
-        pkl --version
+        ./pkl --version
